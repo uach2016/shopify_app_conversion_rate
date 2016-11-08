@@ -1,0 +1,26 @@
+<script type="text/javascript">
+  $(document).on('ready', function() {
+    var shopifyQL = 'SHOW sum(pageview_count) FROM visits SINCE -1m UNTIL today';
+      renderData = function(response) {
+        var all_orders = '<%= @sum_orders %>';
+        var conversion_rate = all_orders / response.result.data[0] * 100
+        $(".result").append(conversion_rate.toFixed(2) + "% conversion_rate");
+
+      };
+      ShopifyApp.Analytics.fetch({
+        query: shopifyQL,
+        success: renderData,
+        error: renderData
+      });
+  });
+</script>
+
+<%= link_to "Pageviews Example", pageviews_path %>
+
+<div class='rate'>
+<div class="result"></div>
+</div>
+
+
+
+
